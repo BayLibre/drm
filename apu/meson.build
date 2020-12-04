@@ -1,4 +1,4 @@
-# Copyright © 2017-2018 Intel Corporation
+# Copyright © 2017 Intel Corporation
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -18,72 +18,40 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-inc_tests = include_directories('.')
-
-subdir('util')
-subdir('kms')
-subdir('modeprint')
-subdir('proptest')
-subdir('modetest')
-subdir('vbltest')
-if with_libkms
-  subdir('kmstest')
-endif
-if with_radeon
-  subdir('radeon')
-endif
-if with_amdgpu
-  subdir('amdgpu')
-endif
-if with_exynos
-  subdir('exynos')
-endif
-if with_tegra
-  subdir('tegra')
-endif
-if with_etnaviv
-  subdir('etnaviv')
-endif
-if with_nouveau
-  subdir('nouveau')
-endif
-if with_apu
-  subdir('apu')
-endif
-
-drmsl = executable(
-  'drmsl',
-  files('drmsl.c'),
+libdrm_apu = shared_library(
+  'drm_apu',
+  [files('apu_drm.c'), config_file],
   include_directories : [inc_root, inc_drm],
-  link_with : libdrm,
   c_args : libdrm_c_args,
+  link_with : libdrm,
+  dependencies : [dep_pthread_stubs, dep_atomic_ops],
+  version : '1.0.0',
+  install : true,
 )
 
-hash = executable(
-  'hash',
-  files('hash.c'),
-  include_directories : [inc_root, inc_drm],
-  link_with : libdrm,
-  c_args : libdrm_c_args,
+ext_libdrm_apu = declare_dependency(
+  link_with : [libdrm, libdrm_apu],
+  include_directories : [inc_drm, include_directories('.')],
 )
 
-random = executable(
-  'random',
-  files('random.c'),
-  include_directories : [inc_root, inc_drm],
-  link_with : libdrm,
-  c_args : libdrm_c_args,
+install_headers('apu_drmif.h', subdir : 'libdrm')
+install_headers('apu_drm.h', subdir : 'apu')
+
+pkg.generate(
+  name : 'libdrm_apu',
+  libraries : libdrm_apu,
+  subdirs : ['.', 'libdrm', 'apu'],
+  version : '0.6',
+  requires_private : 'libdrm',
+  description : 'Userspace interface to apu kernel DRM services',
 )
 
-drmdevice = executable(
-  'drmdevice',
-  files('drmdevice.c'),
-  include_directories : [inc_root, inc_drm],
-  link_with : libdrm,
-  c_args : libdrm_c_args,
+test(
+  'apu-symbols-check',
+  symbols_check,
+  args : [
+    '--lib', libdrm_apu,
+    '--symbols-file', files('apu-symbols.txt'),
+    '--nm', prog_nm.path(),
+  ],
 )
-
-test('random', random, timeout : 240)
-test('hash', hash)
-test('drmsl', drmsl)
-test('drmdevice', drmdevice)

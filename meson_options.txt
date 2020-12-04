@@ -68,6 +68,13 @@ option(
   description : '''Enable support for OMAP's experimental KMS API.''',
 )
 option(
+  'apu',
+  type : 'combo',
+  value : 'false',
+  choices : ['true', 'false', 'auto'],
+  description : '''Enable support for APU''',
+)
+option(
   'exynos',
   type : 'combo',
   value : 'false',
