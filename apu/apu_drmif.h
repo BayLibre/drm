@@ -43,6 +43,8 @@ struct apu_bo *apu_bo_new(struct apu_drm_device *dev,
 		uint32_t size, uint32_t flags);
 struct apu_bo *apu_cached_bo_new(struct apu_drm_device *dev,
 		uint32_t size, uint32_t flags);
+struct apu_bo *apu_bo_user_new(struct apu_drm_device *dev,
+		void *hostptr, uint32_t size, uint32_t flags);
 struct apu_bo *apu_bo_ref(struct apu_bo *bo);
 void apu_bo_del(struct apu_bo *bo);
 uint32_t apu_bo_handle(struct apu_bo *bo);

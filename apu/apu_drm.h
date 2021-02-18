@@ -45,6 +45,14 @@ struct drm_apu_gem_new {
 	uint64_t offset;		/* out */
 };
 
+struct drm_apu_gem_user_new {
+	uint64_t hostptr;
+	uint32_t size;			/* in */
+	uint32_t flags;			/* in */
+	uint32_t handle;		/* out */
+	uint64_t offset;		/* out */
+};
+
 struct drm_apu_gem_queue {
 	uint32_t device;
 	uint32_t cmd;
@@ -90,7 +98,8 @@ struct drm_apu_state {
 #define DRM_APU_GEM_IOMMU_MAP		0x03
 #define DRM_APU_GEM_IOMMU_UNMAP		0x04
 #define DRM_APU_STATE			0x05
-#define DRM_APU_NUM_IOCTLS		0x06
+#define DRM_APU_GEM_USER_NEW		0x06
+#define DRM_APU_NUM_IOCTLS		0x07
 
 #define DRM_IOCTL_APU_GEM_NEW		DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_NEW, struct drm_apu_gem_new)
 #define DRM_IOCTL_APU_GEM_QUEUE		DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_QUEUE, struct drm_apu_gem_queue)
@@ -98,6 +107,7 @@ struct drm_apu_state {
 #define DRM_IOCTL_APU_GEM_IOMMU_MAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_IOMMU_MAP, struct drm_apu_gem_iommu_map)
 #define DRM_IOCTL_APU_GEM_IOMMU_UNMAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_IOMMU_UNMAP, struct drm_apu_gem_iommu_map)
 #define DRM_IOCTL_APU_STATE		DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_STATE, struct drm_apu_state)
+#define DRM_IOCTL_APU_GEM_USER_NEW	DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_USER_NEW, struct drm_apu_gem_user_new)
 
 #if defined(__cplusplus)
 }
