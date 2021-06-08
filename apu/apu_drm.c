@@ -623,3 +623,18 @@ int apu_dequeue_result(struct apu_drm_job *job, uint16_t *result,
 
 	return 0;	
 }
+
+drm_public int apu_device_online(struct apu_drm_device *dev)
+{
+	int ret;
+
+	struct drm_apu_state req = {
+		.device = dev->device_id,
+	};
+
+	ret = drmCommandWriteRead(dev->fd, DRM_APU_STATE, &req, sizeof(req));
+	if (ret)
+		return ret;
+
+	return req.flags & APU_ONLINE;
+}

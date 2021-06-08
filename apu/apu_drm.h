@@ -69,9 +69,19 @@ struct drm_apu_gem_iommu_map {
 	uint64_t bo_device_addresses;
 };
 
+
 struct apu_job_event {
         struct drm_event base;
         uint32_t out_sync;
+};
+
+#define APU_ONLINE		1
+#define APU_CRASHED		2
+#define APU_TIMEDOUT		4
+
+struct drm_apu_state {
+	uint32_t device;
+	uint32_t flags;
 };
 
 #define DRM_APU_GEM_NEW			0x00
@@ -79,13 +89,15 @@ struct apu_job_event {
 #define DRM_APU_GEM_DEQUEUE		0x02
 #define DRM_APU_GEM_IOMMU_MAP		0x03
 #define DRM_APU_GEM_IOMMU_UNMAP		0x04
-#define DRM_APU_NUM_IOCTLS		0x05
+#define DRM_APU_STATE			0x05
+#define DRM_APU_NUM_IOCTLS		0x06
 
 #define DRM_IOCTL_APU_GEM_NEW		DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_NEW, struct drm_apu_gem_new)
 #define DRM_IOCTL_APU_GEM_QUEUE		DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_QUEUE, struct drm_apu_gem_queue)
 #define DRM_IOCTL_APU_GEM_DEQUEUE	DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_DEQUEUE, struct drm_apu_gem_dequeue)
 #define DRM_IOCTL_APU_GEM_IOMMU_MAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_IOMMU_MAP, struct drm_apu_gem_iommu_map)
 #define DRM_IOCTL_APU_GEM_IOMMU_UNMAP	DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_GEM_IOMMU_UNMAP, struct drm_apu_gem_iommu_map)
+#define DRM_IOCTL_APU_STATE		DRM_IOWR(DRM_COMMAND_BASE + DRM_APU_STATE, struct drm_apu_state)
 
 #if defined(__cplusplus)
 }

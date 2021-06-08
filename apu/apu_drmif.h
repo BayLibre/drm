@@ -69,5 +69,6 @@ int apu_bo_iommu_map(struct apu_drm_device *dev,
 int apu_bo_iommu_unmap(
 		struct apu_drm_device *dev,
 		struct apu_bo **bos, uint32_t count);
+int apu_device_online(struct apu_drm_device *dev);
 
 #endif /* APU_DRMIF_H_ */
