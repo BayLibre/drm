@@ -45,13 +45,3 @@ pkg.generate(
   requires_private : 'libdrm',
   description : 'Userspace interface to apu kernel DRM services',
 )
-
-test(
-  'apu-symbols-check',
-  symbols_check,
-  args : [
-    '--lib', libdrm_apu,
-    '--symbols-file', files('apu-symbols.txt'),
-    '--nm', prog_nm.path(),
-  ],
-)
