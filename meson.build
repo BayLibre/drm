@@ -121,6 +121,15 @@ if _omap == 'true'
   with_omap = true
 endif
 
+with_apu = false
+_apu = get_option('apu')
+if _apu == 'true'
+  if not with_atomics
+    error('libdrm_apu requires atomics.')
+  endif
+  with_apu = true
+endif
+
 with_freedreno = false
 _freedreno = get_option('freedreno')
 if _freedreno != 'false'
@@ -347,6 +356,9 @@ endif
 if with_omap
   subdir('omap')
 endif
+if with_apu
+  subdir('apu')
+endif
 if with_exynos
   subdir('exynos')
 endif
@@ -378,6 +390,7 @@ message('  Radeon API     @0@'.format(with_radeon))
 message('  AMDGPU API     @0@'.format(with_amdgpu))
 message('  Nouveau API    @0@'.format(with_nouveau))
 message('  OMAP API       @0@'.format(with_omap))
+message('  APU API       @0@'.format(with_apu))
 message('  EXYNOS API     @0@'.format(with_exynos))
 message('  Freedreno API  @0@ (kgsl: @1@)'.format(with_freedreno, with_freedreno_kgsl))
 message('  Tegra API      @0@'.format(with_tegra))

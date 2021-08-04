@@ -1,0 +1,12 @@
+build = ["Android.sources.bp"]
+
+cc_library_shared {
+    name: "libdrm_apu",
+    defaults: [
+        "libdrm_defaults",
+        "libdrm_apu_sources",
+    ],
+    vendor: true,
+
+    shared_libs: ["libdrm"],
+}
