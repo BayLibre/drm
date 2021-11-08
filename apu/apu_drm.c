@@ -634,7 +634,7 @@ drm_public int apu_device_online(struct apu_drm_device *dev)
 
 	ret = drmCommandWriteRead(dev->fd, DRM_APU_STATE, &req, sizeof(req));
 	if (ret)
-		return ret;
+		return 0;
 
 	return req.flags & APU_ONLINE;
 }
